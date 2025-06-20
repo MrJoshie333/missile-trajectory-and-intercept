@@ -1,10 +1,12 @@
 # Setting up the simulation
+import numpy
 import numpy as np
 import matplotlib.pyplot as plt
-
+import math as m
 from vehicle import Vehicle
 from environment import Environment
 from dynamics import getTrajectory
+from visualization import plotTrajectory, plotFittedTrajectory
 
 # === Environment configuration ===
 # Adjust these values as needed.
@@ -29,5 +31,25 @@ missile1 = Vehicle(
     acc=[0, 0]
 )
 
-time = np.linspace(0, 5, 1000)
-getTrajectory(env, missile1, time)
+time = np.linspace(0, 1, 1000)
+trajectory, timeBeforeHitGround = getTrajectory(env, missile1, time)
+print(trajectory)
+plotTrajectory(trajectory)
+
+
+
+
+
+
+# # /----- Debugging -----/
+#
+# print("time taken: " + str(timeBeforeHitGround))
+# # print("trajectory: " + str(missile.trajectory))
+#
+# testValue = 225 * np.sin(2 * m.pi / 4) / 9.81  # assuming a 45 degree angle, 15 vo, (0,0) starting pos
+# # print("range equation trajectory" + str(testValue))
+# print("final x position: " + str(trajectory[-1][0]))
+#
+# print("final y position: " + str(trajectory[-1][1]))
+
+
