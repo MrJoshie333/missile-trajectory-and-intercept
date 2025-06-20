@@ -20,14 +20,14 @@ environment_params = {
 
 env = Environment(**environment_params)
 
-#Angle is measured starting at the positive x-axis and going counterclockwise
+# Angle is measured starting at the positive x-axis and going counterclockwise
 missile1 = Vehicle(
-    mass = 5000,
-    velocity = 32,
-    angle = 15,
-    pos = [0,0],
-    acc = [0,0]
+    mass=5000,
+    velocity=32,
+    angle=15,
+    pos=[0, 0],
+    acc=[0, 0]
 )
 
-time = np.linspace(0, .5, 1000)
+time = np.linspace(0, 5, 1000)
 getTrajectory(env, missile1, time)
