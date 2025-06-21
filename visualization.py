@@ -15,8 +15,10 @@ def initialConditionsText(vehicle, environment):
              f"Temperature: {environment.T} K\n"
              f"Speed of Sound: {environment.a} m/s\n"
              f"Gravity: {environment.gravity} m/$s^2$\n"
+             f"Time of Flight: {vehicle.tFlight:.5f} s"
              , transform=plt.gca().transAxes,
              ha = 'left', va = 'top', fontsize = 12)
+
 def plotTrajectory(trajectory, vehicle, environment):
     #create plot
     plt.figure(figsize=(10, 10))

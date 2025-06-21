@@ -30,11 +30,19 @@ missile1 = Vehicle(
     pos=[0, 0],
     acc=[0, 0]
 )
-
+missile2 = Vehicle(
+    mass=5000,
+    velocity=85,
+    angle=91,
+    pos=[0, 5],
+    acc=[0, 0]
+)
 time = np.linspace(0, 5, 100)
-trajectory, timeBeforeHitGround = getTrajectory(env, missile1, time)
-# print(trajectory)
+trajectory, flightTime = getTrajectory(env, missile1, time)
 plotTrajectory(trajectory, missile1, env)
+time = np.linspace(0, 20, 100)
+trajectory2, flightTime2 = getTrajectory(env, missile2, time)
+plotTrajectory(trajectory2, missile2, env)
 
 
 

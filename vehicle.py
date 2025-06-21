@@ -21,3 +21,4 @@ class Vehicle:
         # Assuming vertical launch is 90 degrees
 
         self.trajectory = []  # stores all the trajectory values at each time step
+        self.tFlight = None
