@@ -18,7 +18,7 @@ class Vehicle:
         # Uses defaults only if values not provided
         self.pos = np.array(pos) if pos else np.array([0.0, 0.0])
         self.acc = np.array(acc) if acc else np.array([0.0, 0.0])
-        # Assuming vertical launch is 90 degrees
 
         self.trajectory = []  # stores all the trajectory values at each time step
+        self.xTraveled = None
         self.tFlight = None

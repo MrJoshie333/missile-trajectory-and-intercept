@@ -1,11 +1,9 @@
 # Setting up the simulation
-import numpy
 import numpy as np
-import matplotlib.pyplot as plt
-import math as m
-from vehicle import Vehicle
-from environment import Environment
+
 from dynamics import getTrajectory
+from environment import Environment
+from vehicle import Vehicle
 from visualization import plotTrajectory
 
 # === Environment configuration ===
@@ -21,33 +19,22 @@ environment_params = {
 }
 
 env = Environment(**environment_params)
+# === End of environment configuration ===
+
+# === Vehicle configuration ===
 
 # Angle is measured starting at the positive x-axis and going counterclockwise
-missile1 = Vehicle(
-    mass=5000,
-    velocity=32,
-    angle=15,
-    pos=[0, 0],
-    acc=[0, 0]
-)
-missile2 = Vehicle(
-    mass=5000,
-    velocity=85,
-    angle=91,
-    pos=[0, 5],
-    acc=[0, 0]
-)
-time = np.linspace(0, 5, 100)
-trajectory, flightTime = getTrajectory(env, missile1, time)
-plotTrajectory(trajectory, missile1, env)
-time = np.linspace(0, 20, 100)
-trajectory2, flightTime2 = getTrajectory(env, missile2, time)
-plotTrajectory(trajectory2, missile2, env)
 
+missiles = [
+Vehicle(mass=5000,velocity=32,angle=15,pos=[0, 0],acc=[0, 0]),
+Vehicle(mass=5000,velocity=100,angle=10,pos=[0, 0],acc=[0, 0])
+]
 
+time = np.linspace(0, 3, 100)
+results = []
+trajectories = [getTrajectory(env, missile, time) for missile in missiles]
 
-
-
+plotTrajectory(env, missiles, trajectories)
 
 # # /----- Debugging -----/
 #
@@ -59,5 +46,3 @@ plotTrajectory(trajectory2, missile2, env)
 # print("final x position: " + str(trajectory[-1][0]))
 #
 # print("final y position: " + str(trajectory[-1][1]))
-
-

@@ -3,32 +3,24 @@
 import numpy as np
 
 
+
 def getTrajectory(env, missile, time):
-    # get positions
     for t in time:
         x = missile.pos[0] + (missile.vel[0] * t)
         y = missile.pos[1] + (missile.vel[1] * t) - 0.5 * env.gravity * t ** 2
-        # missile.trajectory = np.append(missile.trajectory, (x, y), axis=0)
         missile.trajectory.append((x, y))
-        # stop the missile if it hits the ground
 
-        # tFlight = None
-        if y <= 0 and len(missile.trajectory) > 1:
-            # missile.trajectory = np.delete(missile.trajectory, -1, axis=0)
+        if y <= 0 and len(missile.trajectory) > 1: #if the missile hits the ground, assuming y(t)=0
             del missile.trajectory[-1]
-
-            # Getting last position, for y=0
-            # time of flight, assuming y(t)=0:
             missile.tFlight = (missile.vel[1] + np.sqrt(missile.vel[1] ** 2 + 2 * env.gravity * missile.pos[1])) / env.gravity
             # Final Range:
-            xRange = missile.pos[0] + missile.vel[0] * missile.tFlight
-            # missile.trajectory = np.append(missile.trajectory,(xRange, 0), axis=0)
-            missile.trajectory.append((xRange, 0))
-
+            missile.xTraveled = missile.pos[0] + missile.vel[0] * missile.tFlight
+            missile.trajectory.append((missile.xTraveled, 0))
             break
 
-    if missile.tFlight is None:
+    if missile.tFlight is None: #if it never reaches the ground
         missile.tFlight = t
-    return missile.trajectory, missile.tFlight
+        missile.xTraveled=missile.trajectory[-1][0]
+    return missile.trajectory
 
 

@@ -1,43 +1,59 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-def initialConditionsText(vehicle, environment):
-    plt.text(0.01, 0.99,
-             #bold just Initial Conditions:
-             r"$\bf{Initial\ Conditions:}$" + "\n"
-             f"Mass: {vehicle.mass} kg\n"
-             f"Velocity: {vehicle.velocity} m/s\n"
-             f"Angle: {np.ceil(np.rad2deg(vehicle.angle))} degrees\n"
-             f"Position: ({vehicle.pos[0]}, {vehicle.pos[1]})m\n"
-             f"Acceleration: ({vehicle.acc[0]}, {vehicle.acc[1]}) m/$s^2$\n"
-             f"Density: {environment.rho} kg/$m^3$\n"
-             f"Pressure: {environment.p} Pa\n"
-             f"Temperature: {environment.T} K\n"
-             f"Speed of Sound: {environment.a} m/s\n"
-             f"Gravity: {environment.gravity} m/$s^2$\n"
-             f"Time of Flight: {vehicle.tFlight:.5f} s"
-             , transform=plt.gca().transAxes,
-             ha = 'left', va = 'top', fontsize = 12)
+def initialConditionsText(ax, missile, environment, idx, numVehicles, x_pad = 0.02, y_pad = 0.02):
 
-def plotTrajectory(trajectory, vehicle, environment):
-    #create plot
-    plt.figure(figsize=(10, 10))
-    xVals, yVals = zip(*trajectory)
-    xVals = np.array(xVals)
-    yVals = np.array(yVals)
+    # Compute box position
+    box_height = 1 / numVehicles
+    y0 = 1 - idx * box_height - y_pad
+    x0 = 1 + x_pad
 
-    plt.scatter(xVals, yVals)
-    plt.plot(np.unique(xVals), np.poly1d(np.polyfit(xVals, yVals, 2))(np.unique(xVals)))
+    text = (
+    fr"$\bf{{Missile\ {idx + 1}\ Initial\ Conditions:}}$" + f"\n"
+    f"Mass: {missile.mass} kg\n"
+    f"Velocity: {missile.velocity} m/s\n"
+    f"Angle: {np.ceil(np.rad2deg(missile.angle))}°\n"
+    f"Position: ({missile.pos[0]}, {missile.pos[1]}) m\n"
+    f"Acceleration: ({missile.acc[0]}, {missile.acc[1]}) m/s²\n"
+    f"Density: {environment.rho} kg/m³\n"
+    f"Pressure: {environment.p} Pa\n"
+    f"Temperature: {environment.T} K\n"
+    f"Speed of Sound: {environment.a} m/s\n"
+    f"Gravity: {environment.gravity} m/s²\n"
+    f"Time of Flight: {missile.tFlight:.5f} s\n"
+    f"x-Range: {missile.xTraveled:.5f} m"
+    )
 
-    plt.xlabel('X Position (m)')
-    plt.ylabel('Y Position (m)')
-    plt.title('Missile Trajectory')
-    plt.legend(['Actual Trajectory', 'Fitted Line'])
+    ax.text(x0,y0,text,
+        verticalalignment='top',
+        horizontalalignment='left',
+        transform=ax.transAxes,
+        family='monospace',
+        bbox=dict(facecolor='lightgray', edgecolor='black', boxstyle='round,pad=0.3', alpha=0.3),
+    )
+def plotTrajectory(env, missiles, trajectories):
+    fix, ax = plt.subplots(figsize=(10, 10))
 
-    initialConditionsText(vehicle, environment) #Initial Conditions Text
+    for idx, (missile, trajectory) in enumerate(zip(missiles, trajectories)):
+        xVals, yVals = zip(*trajectory)
+        xVals = np.array(xVals)
+        yVals = np.array(yVals)
+
+        ax.scatter(xVals, yVals, label = f"Missile {idx + 1}")
+        ax.plot(np.unique(xVals), np.poly1d(np.polyfit(xVals, yVals, 2))(np.unique(xVals)), label = f"Missile {idx + 1} Fit")
+
+    ax.set_xlabel('X Position (m)')
+    ax.set_ylabel('Y Position (m)')
+    ax.set_title('All Missile Trajectory')
+    ax.legend(['Actual Trajectory', 'Fitted Line'], loc = 'upper left')
+    ax.grid(True, alpha = 0.5)
+
+    #Initial conditions Text:
+    plt.subplots_adjust(right=0.75)
+    for idx, missile in enumerate(missiles):
+        initialConditionsText(ax, missile, env, idx, len(missiles))
+
     plt.grid(True, alpha = 0.5)
-
-
     plt.show()
 
 #<----- Debugging ----->
