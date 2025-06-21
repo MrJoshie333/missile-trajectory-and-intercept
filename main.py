@@ -26,15 +26,18 @@ env = Environment(**environment_params)
 # Angle is measured starting at the positive x-axis and going counterclockwise
 
 missiles = [
-Vehicle(mass=5000,velocity=32,angle=15,pos=[0, 0],acc=[0, 0]),
-Vehicle(mass=5000,velocity=100,angle=10,pos=[0, 0],acc=[0, 0])
+Vehicle(initialMass=5000,velocity=32,launchAngle=15,pos=[0, 0],acc=[0, 0]),
+Vehicle(initialMass=5000,velocity=100,launchAngle=10,pos=[0, 0],acc=[0, 0])
 ]
 
-time = np.linspace(0, 3, 100)
+time = np.linspace(0, 5, 100)
 results = []
-trajectories = [getTrajectory(env, missile, time) for missile in missiles]
+allTrajectories = []
+for missile in missiles:
+    xData, yData = getTrajectory(env, missile, time)
+    allTrajectories.append([(x,y) for x,y in zip(xData, yData)])
 
-plotTrajectory(env, missiles, trajectories)
+plotTrajectory(env, missiles, allTrajectories)
 
 # # /----- Debugging -----/
 #

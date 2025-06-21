@@ -1,24 +1,18 @@
 # Constants for the vehicle
 import numpy as np
 
+from dynamics import motionState
+
 
 class Vehicle:
     import numpy as np
-    def __init__(self, mass: float, velocity: float = 0.0, angle: float = 90.0, pos: list[float] = None,
+    def __init__(self, initialMass: float, velocity: float = 0.0, launchAngle: float = 90.0, pos: list[float] = None,
                  acc: list[float] = None, ):
-        self.mass = mass
-        self.velocity = velocity
-        vel = velocity #simply for visualization printing text
-        self.angle = np.deg2rad(angle)
-        self.vel = np.array([
-            vel * np.cos(self.angle), #Vx
-            vel * np.sin(self.angle) #Vy
-        ])
-
-        # Uses defaults only if values not provided
-        self.pos = np.array(pos) if pos else np.array([0.0, 0.0])
-        self.acc = np.array(acc) if acc else np.array([0.0, 0.0])
-
-        self.trajectory = []  # stores all the trajectory values at each time step
-        self.xTraveled = None
-        self.tFlight = None
+        pos = pos or [0.0, 0.0]
+        acc = acc or [0.0, 0.0]
+        self.initialVelocity = velocity
+        self.initialMass = initialMass
+        self.launchAngle = launchAngle
+        self.state = motionState(x=[pos[0]], y=[pos[1]], vx=[velocity * np.cos(np.deg2rad(launchAngle))],
+                                 vy=[velocity * np.sin(np.deg2rad(launchAngle))], ax=[acc[0]], ay=[acc[1]],
+                                 currentAngle=launchAngle, currentMass=initialMass, flightTime=None)
