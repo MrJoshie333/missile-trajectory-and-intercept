@@ -6,7 +6,7 @@ import math as m
 from vehicle import Vehicle
 from environment import Environment
 from dynamics import getTrajectory
-from visualization import plotTrajectory, plotFittedTrajectory
+from visualization import plotTrajectory
 
 # === Environment configuration ===
 # Adjust these values as needed.
@@ -31,10 +31,10 @@ missile1 = Vehicle(
     acc=[0, 0]
 )
 
-time = np.linspace(0, 1, 1000)
+time = np.linspace(0, 5, 100)
 trajectory, timeBeforeHitGround = getTrajectory(env, missile1, time)
-print(trajectory)
-plotTrajectory(trajectory)
+# print(trajectory)
+plotTrajectory(trajectory, missile1, env)
 
 
 

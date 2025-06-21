@@ -7,7 +7,8 @@ class Vehicle:
     def __init__(self, mass: float, velocity: float = 0.0, angle: float = 90.0, pos: list[float] = None,
                  acc: list[float] = None, ):
         self.mass = mass
-        vel = velocity
+        self.velocity = velocity
+        vel = velocity #simply for visualization printing text
         self.angle = np.deg2rad(angle)
         self.vel = np.array([
             vel * np.cos(self.angle), #Vx
