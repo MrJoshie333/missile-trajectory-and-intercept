@@ -16,6 +16,8 @@ class motionState:
     flightTime: None
 
 
+# def getAcceleration(env, missile):
+
 
 def getTrajectory(env, missile, time):
     for t in time:
