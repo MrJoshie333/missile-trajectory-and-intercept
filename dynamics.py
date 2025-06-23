@@ -18,6 +18,7 @@ class kinematicState:
     totalAccelerationY: list[float]
     thrustAccelerationX: list[float]
     thrustAccelerationY: list[float]
+    gravitationalAccelerationY: list[float]
 
 #STATE USES SEMI-IMPLICIT EULER!!!!
 def getState(env, missile, time):
@@ -29,15 +30,18 @@ def getState(env, missile, time):
         # Calculate new angle
         missile.flightAngle.append(np.arctan2(missile.vY[-1], missile.vX[-1]))
 
-        # Thrust Acceleration:
+        # Thrust Acceleration
         kinematicState.thrustAccelerationX.append(missile.getThrustAccelerationX())
         kinematicState.thrustAccelerationY.append(missile.getThrustAccelerationY())
 
-        # total acceleration
-        kinematicState.totalAccelerationX.append(kinematicState.thrustAccelerationX[-1])
-        kinematicState.totalAccelerationY.append(kinematicState.thrustAccelerationY[-1] + (-1 * env.gravity))
+        # Gravitational Acceleration
+        kinematicState.gravitationalAccelerationY.append(missile.getGravitationalAcceleration())
 
-        # updated velocity:
+        # Total Acceleration
+        kinematicState.totalAccelerationX.append(kinematicState.thrustAccelerationX[-1])
+        kinematicState.totalAccelerationY.append(kinematicState.thrustAccelerationY[-1] + (-1 * kinematicState.gravitationalAccelerationY[-1]))
+
+        # updated velocity
         missile.vX.append(missile.vX[-1] + kinematicState.totalAccelerationX[-1] * dt)
         missile.vY.append(missile.vY[-1] + kinematicState.totalAccelerationY[-1] * dt)
 
