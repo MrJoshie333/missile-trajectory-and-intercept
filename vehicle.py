@@ -39,7 +39,7 @@ class Vehicle:
                                              totalAccelerationY=[initialAcceleration[1]],
                                              thrustAccelerationX=[initialThrustAccelerationX],
                                              thrustAccelerationY=[initialThrustAccelerationY],
-                                            gravitationalAccelerationY=[getGravitationalAcceleration]#) #syntax here??
+                                            gravitationalAccelerationY=[self.getGravitationalAcceleration]#) #syntax here??
 
     def getFlightAngle(self):  # in radians
         return np.arctan2(self.kinematicState.vY[-1], self.kinematicState.vX[-1])
