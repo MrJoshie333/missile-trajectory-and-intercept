@@ -30,7 +30,7 @@ class Vehicle:
         # CURRENTLY ASSUMING:
         # Constant, always on Thrust (eventually: thrustForce = ...)
         # Constant mass
-        #flat earth and constant g value, so there is no x-component of g
+        #flat earth, so there is no x-component of g
 
         self.kinematicState = kinematicState(x=[initialPosition[0]], y=[initialPosition[1]],
                                              vX=[initialVelocity * np.cos(np.deg2rad(launchAngle))],
