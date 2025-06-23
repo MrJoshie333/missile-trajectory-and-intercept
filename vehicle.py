@@ -42,8 +42,9 @@ class Vehicle:
 
     def getFlightAngle(self):  # in radians
         return np.arctan2(self.kinematicState.vY[-1], self.kinematicState.vX[-1])
-
-    # def getGravityAcceleration(mass, gravity_):
+    
+    def getGravitationalAcceleration(self):
+        return self.env.gravitationalConst * (self.env.earthRadius / (self.env.earthRadius + self.kinematicState.y[-1])) ** 2
     def getThrustAccelerationX(self): #eventually change once mass and thrust force are variables
         return (self.thrustForce / self.initialMass) * np.cos(self.flightAngle[-1]) #returns x thrust acceleration
     def getThrustAccelerationY(self):
