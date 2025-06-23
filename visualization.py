@@ -13,15 +13,15 @@ def initialConditionsText(ax, missile, environment, idx, numVehicles, x_pad=0.02
         f"Mass: {missile.initialMass} kg\n"
         f"Velocity: {missile.initialVelocity} m/s\n"
         f"Angle: {np.ceil(missile.launchAngle)}°\n"
-        f"Position: ({missile.state.x[0]}, {missile.state.y[0]}) m\n"
-        f"Acceleration: ({missile.state.ax[0]}, {missile.state.ay[0]}) m/s²\n"
+        f"Position: ({missile.x[0]}, {missile.y[0]}) m\n"
+        f"Acceleration: ({missile.ax[0]}, {missile.ay[0]}) m/s²\n"
         f"Density: {environment.rho} kg/m³\n"
         f"Pressure: {environment.p} Pa\n"
         f"Temperature: {environment.T} K\n"
         f"Speed of Sound: {environment.a} m/s\n"
         f"Gravity: {environment.gravity} m/s²\n"
-        f"Time of Flight: {missile.state.flightTime:.5f} s\n"
-        f"x-Range: {missile.state.x[-1]:.5f} m"
+        f"Time of Flight: {missile.flightTime:.5f} s\n"
+        f"x-Range: {missile.x[-1]:.5f} m"
     )
 
     ax.text(x0, y0, text,

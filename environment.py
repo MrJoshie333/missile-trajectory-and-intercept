@@ -1,6 +1,12 @@
 #Parameters and constants for the environment
 import numpy as np
 
+class Time:
+    def __init__(self, runTime: float, numSteps: int):
+        self.runTime = runTime
+        self.timeStep = runTime / numSteps
+
+
 class Environment:
     def __init__(self, gravity = 9.81, rho = 1.225, p = 101325, T = 288.15, a = 343):
         #gravitational constant in m/s^2 (assuming unchanging with altitude)
