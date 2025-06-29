@@ -1,10 +1,7 @@
 # Aerodynamic Equations for missile dynamics
 from dataclasses import dataclass
+
 import numpy as np
-
-
-
-
 
 
 # don't need acceleration/thrust in this class
@@ -20,10 +17,11 @@ class kinematicState:
     thrustAccelerationY: list[float]
     gravitationalAccelerationY: list[float]
 
-#STATE USES SEMI-IMPLICIT EULER!!!!
+
+# STATE USES SEMI-IMPLICIT EULER!!!!
 def getState(env, missile, time):
     t = 0.0
-    dt = time.timeStep #use dt as time step for kinematic equations
+    dt = time.timeStep  # use dt as time step for kinematic equations
     while t <= time.runTime:
         # Use previous pos, v
         # do i calculate change in m,g first?
@@ -39,21 +37,31 @@ def getState(env, missile, time):
 
         # Total Acceleration
         kinematicState.totalAccelerationX.append(kinematicState.thrustAccelerationX[-1])
-        kinematicState.totalAccelerationY.append(kinematicState.thrustAccelerationY[-1] + (-1 * kinematicState.gravitationalAccelerationY[-1]))
+        kinematicState.totalAccelerationY.append(
+            kinematicState.thrustAccelerationY[-1] + (-1 * kinematicState.gravitationalAccelerationY[-1]))
 
         # updated velocity
-        missile.vX.append(missile.vX[-1] + kinematicState.totalAccelerationX[-1] * dt)
-        missile.vY.append(missile.vY[-1] + kinematicState.totalAccelerationY[-1] * dt)
+        kinematicState.vX.append(missile.vX[-1] + kinematicState.totalAccelerationX[-1] * dt)
+        kinematicState.vY.append(missile.vY[-1] + kinematicState.totalAccelerationY[-1] * dt)
 
         # updated position:
-        missile.x.append(missile.x[-1] + missile.vX[-1] * dt)
-        missile.y.append(missile.y[-1] + missile.vY[-1] * dt)
+        kinematicState.x.append(kinematicState.x[-1] + kinematicState.vX[-1] * dt)
+        kinematicState.y.append(kinematicState.y[-1] + kinematicState.vY[-1] * dt)
 
-        #updated mass, later
+        # updated mass, later
 
-
-
+        # Check if it hits the ground
+        if kinematicState.y[-1] <= 0 and len(
+                kinematicState.y) > 2:  # if the missile hits the ground, assuming y(t)=0; needs to be length 2 because we initialize with y=0
+            for last in [kinematicState.x, kinematicState.y, kinematicState.vX, kinematicState.vY,
+                         kinematicState.totalAccelerationX, kinematicState.totalAccelerationY,
+                         kinematicState.thrustAccelerationX, kinematicState.thrustAccelerationY,
+                         kinematicState.gravitationalAccelerationY]:
+                del last[-1]
+            break
         t += dt
+    return missile
+
 
 
 def getTrajectory(env, missile, time):
