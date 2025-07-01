@@ -1,7 +1,7 @@
 # Constants for the vehicle
 import numpy as np
 
-from dynamics import kinematicState
+from dynamics import KinematicState
 from environment import Environment
 
 
@@ -17,9 +17,11 @@ class Vehicle:
 
         self.initialMass = initialMass
         self.flightAngle = []
+        self.launchAngle = launchAngle #for initial on the plot
         self.flightAngle.append(np.deg2rad(launchAngle))
         self.thrustForce = thrustForce
         self.env = env or Environment()
+        self.flightTime = 0
 
         initialPosition = initialPosition or [0.0, 0.0]  # initial pos
         self.initialVelocity = initialVelocity  # init vel
@@ -32,7 +34,7 @@ class Vehicle:
         # Constant mass
         # flat earth, so there is no x-component of g
 
-        self.kinematicState = kinematicState(
+        self.KinematicState = KinematicState(
             x=[initialPosition[0]], y=[initialPosition[1]],
             vX=[initialVelocity * np.cos(np.deg2rad(launchAngle))],
             vY=[initialVelocity * np.sin(np.deg2rad(launchAngle))],
@@ -42,14 +44,15 @@ class Vehicle:
             thrustAccelerationY=[initialThrustAccelerationY],
             gravitationalAccelerationY=[])
 
-        self.kinematicState.gravitationalAccelerationY = self.getGravitationalAcceleration()
+        #initial gravitational acceleration in the y direction. Should this be something different?
+        self.KinematicState.gravitationalAccelerationY.append(self.getGravitationalAcceleration())
 
     def getFlightAngle(self):  # in radians
-        return np.arctan2(self.kinematicState.vY[-1], self.kinematicState.vX[-1])
+        return np.arctan2(self.KinematicState.vY[-1], self.KinematicState.vX[-1])
 
     def getGravitationalAcceleration(self):
         return self.env.gravitationalConst * (
-                self.env.earthRadius / (self.env.earthRadius + self.kinematicState.y[-1])) ** 2
+                self.env.earthRadius / (self.env.earthRadius + self.KinematicState.y[-1])) ** 2
 
     def getThrustAccelerationX(self):  # eventually change once mass and thrust force are variables
         return (self.thrustForce / self.initialMass) * np.cos(self.flightAngle[-1])  # returns x thrust acceleration

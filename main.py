@@ -37,7 +37,7 @@ results = []
 allTrajectories = []
 for missile in missiles:
     state = getState(env, missile, time)
-    allTrajectories.append([(x,y) for x,y in zip(xData, yData)])
+    allTrajectories.append([(x,y) for x,y in zip(missile.KinematicState.x, missile.KinematicState.y)])
 
 plotTrajectory(env, missiles, allTrajectories)
 

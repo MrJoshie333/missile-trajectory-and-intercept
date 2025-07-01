@@ -6,7 +6,7 @@ import numpy as np
 
 # don't need acceleration/thrust in this class
 @dataclass
-class kinematicState:
+class KinematicState:
     x: list[float]
     y: list[float]
     vX: list[float]
@@ -26,42 +26,47 @@ def getState(env, missile, time):
         # Use previous pos, v
         # do i calculate change in m,g first?
         # Calculate new angle
-        missile.flightAngle.append(np.arctan2(missile.vY[-1], missile.vX[-1]))
+        missile.flightAngle.append(np.arctan2(missile.KinematicState.vY[-1], missile.KinematicState.vX[-1]))
 
         # Thrust Acceleration
-        kinematicState.thrustAccelerationX.append(missile.getThrustAccelerationX())
-        kinematicState.thrustAccelerationY.append(missile.getThrustAccelerationY())
+        missile.KinematicState.thrustAccelerationX.append(missile.getThrustAccelerationX())
+        missile.KinematicState.thrustAccelerationY.append(missile.getThrustAccelerationY())
 
         # Gravitational Acceleration
-        kinematicState.gravitationalAccelerationY.append(missile.getGravitationalAcceleration())
+        missile.KinematicState.gravitationalAccelerationY.append(missile.getGravitationalAcceleration())
 
         # Total Acceleration
-        kinematicState.totalAccelerationX.append(kinematicState.thrustAccelerationX[-1])
-        kinematicState.totalAccelerationY.append(
-            kinematicState.thrustAccelerationY[-1] + (-1 * kinematicState.gravitationalAccelerationY[-1]))
+        missile.KinematicState.totalAccelerationX.append(missile.KinematicState.thrustAccelerationX[-1])
+        missile.KinematicState.totalAccelerationY.append(
+            missile.KinematicState.thrustAccelerationY[-1] + (
+                        -1 * missile.KinematicState.gravitationalAccelerationY[-1]))
 
         # updated velocity
-        kinematicState.vX.append(missile.vX[-1] + kinematicState.totalAccelerationX[-1] * dt)
-        kinematicState.vY.append(missile.vY[-1] + kinematicState.totalAccelerationY[-1] * dt)
+        missile.KinematicState.vX.append(
+            missile.KinematicState.vX[-1] + missile.KinematicState.totalAccelerationX[-1] * dt)
+        missile.KinematicState.vY.append(
+            missile.KinematicState.vY[-1] + missile.KinematicState.totalAccelerationY[-1] * dt)
 
         # updated position:
-        kinematicState.x.append(kinematicState.x[-1] + kinematicState.vX[-1] * dt)
-        kinematicState.y.append(kinematicState.y[-1] + kinematicState.vY[-1] * dt)
+        missile.KinematicState.x.append(missile.KinematicState.x[-1] + missile.KinematicState.vX[-1] * dt)
+        missile.KinematicState.y.append(missile.KinematicState.y[-1] + missile.KinematicState.vY[-1] * dt)
 
+        t += dt
         # updated mass, later
 
         # Check if it hits the ground
-        if kinematicState.y[-1] <= 0 and len(
-                kinematicState.y) > 2:  # if the missile hits the ground, assuming y(t)=0; needs to be length 2 because we initialize with y=0
-            for last in [kinematicState.x, kinematicState.y, kinematicState.vX, kinematicState.vY,
-                         kinematicState.totalAccelerationX, kinematicState.totalAccelerationY,
-                         kinematicState.thrustAccelerationX, kinematicState.thrustAccelerationY,
-                         kinematicState.gravitationalAccelerationY]:
+        if missile.KinematicState.y[-1] <= 0 and len(
+                missile.KinematicState.y) > 2:  # if the missile hits the ground, assuming y(t)=0; needs to be length 2 because we initialize with y=0
+            for last in [missile.KinematicState.x, missile.KinematicState.y, missile.KinematicState.vX,
+                         missile.KinematicState.vY,
+                         missile.KinematicState.totalAccelerationX, missile.KinematicState.totalAccelerationY,
+                         missile.KinematicState.thrustAccelerationX, missile.KinematicState.thrustAccelerationY,
+                         missile.KinematicState.gravitationalAccelerationY]:
                 del last[-1]
             break
-        t += dt
+    if missile.flightTime is None:  # if it never reaches the ground
+        missile.flightTime = t
     return missile
-
 
 #
 # def getTrajectory(env, missile, time):
