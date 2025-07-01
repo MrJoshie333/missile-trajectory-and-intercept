@@ -63,28 +63,28 @@ def getState(env, missile, time):
     return missile
 
 
-
-def getTrajectory(env, missile, time):
-    for t in time:
-        # zip the x and y together
-
-        x = missile.x[0] + (missile.vx[0] * t)
-        y = missile.y[0] + (missile.vy[0] * t) - 0.5 * env.gravity * t ** 2
-        missile.x.append(x)
-        missile.y.append(y)
-        # print(x, y)
-        if y <= 0 and len(
-                missile.y) > 2:  # if the missile hits the ground, assuming y(t)=0; needs to be length 2 because we initialize with y=0
-            del missile.x[-1]
-            del missile.y[-1]
-            missile.flightTime = (missile.vy[0] + np.sqrt(
-                missile.vy[0] ** 2 + 2 * env.gravity * missile.y[0])) / env.gravity
-            # Final Range:
-            xTraveled = missile.x[0] + missile.vx[0] * missile.flightTime
-            missile.x.append(xTraveled)
-            missile.y.append(0)
-            break
-
-    if missile.flightTime is None:  # if it never reaches the ground
-        missile.flightTime = t
-    return missile.x, missile.y
+#
+# def getTrajectory(env, missile, time):
+#     for t in time:
+#         # zip the x and y together
+#
+#         x = missile.x[0] + (missile.vx[0] * t)
+#         y = missile.y[0] + (missile.vy[0] * t) - 0.5 * env.gravity * t ** 2
+#         missile.x.append(x)
+#         missile.y.append(y)
+#         # print(x, y)
+#         if y <= 0 and len(
+#                 missile.y) > 2:  # if the missile hits the ground, assuming y(t)=0; needs to be length 2 because we initialize with y=0
+#             del missile.x[-1]
+#             del missile.y[-1]
+#             missile.flightTime = (missile.vy[0] + np.sqrt(
+#                 missile.vy[0] ** 2 + 2 * env.gravity * missile.y[0])) / env.gravity
+#             # Final Range:
+#             xTraveled = missile.x[0] + missile.vx[0] * missile.flightTime
+#             missile.x.append(xTraveled)
+#             missile.y.append(0)
+#             break
+#
+#     if missile.flightTime is None:  # if it never reaches the ground
+#         missile.flightTime = t
+#     return missile.x, missile.y

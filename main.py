@@ -1,7 +1,7 @@
 # Setting up the simulation
 import numpy as np
 
-from dynamics import getTrajectory
+from dynamics import getState
 from environment import Environment, Time
 from vehicle import Vehicle
 from visualization import plotTrajectory
@@ -36,7 +36,7 @@ time = Time(5, 100) #Time (s), numSteps
 results = []
 allTrajectories = []
 for missile in missiles:
-    xData, yData = getTrajectory(env, missile, time)
+    state = getState(env, missile, time)
     allTrajectories.append([(x,y) for x,y in zip(xData, yData)])
 
 plotTrajectory(env, missiles, allTrajectories)
