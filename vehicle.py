@@ -21,11 +21,12 @@ class Vehicle:
         self.flightAngle.append(np.deg2rad(launchAngle))
         self.thrustForce = thrustForce
         self.env = env or Environment()
-        self.flightTime = 0
+        self.flightTime = None
 
         initialPosition = initialPosition or [0.0, 0.0]  # initial pos
         self.initialVelocity = initialVelocity  # init vel
         initialAcceleration = initialAcceleration or [0.0, 0.0]  # init acc
+        self.initialThrust = thrustForce
         initialThrustAccelerationX = thrustForce / initialMass * np.cos(np.deg2rad(launchAngle))
         initialThrustAccelerationY = thrustForce / initialMass * np.sin(np.deg2rad(launchAngle))
 

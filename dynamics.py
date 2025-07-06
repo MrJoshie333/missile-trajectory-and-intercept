@@ -63,7 +63,20 @@ def getState(env, missile, time):
                          missile.KinematicState.thrustAccelerationX, missile.KinematicState.thrustAccelerationY,
                          missile.KinematicState.gravitationalAccelerationY]:
                 del last[-1]
+            # solve ½ a_n τ² + v_n τ + y_n = 0 for τ in [0,dt]
+            discriminant = missile.KinematicState.vY[-1] ** 2 - (2 * missile.KinematicState.totalAccelerationY[-1] * missile.KinematicState.y[-1])
+            #prevent negative discriminants:
+            discriminant = max(0, discriminant)
+            #Current time is calculating the time between the last non-negative timestep and it touching the ground.
+            #Can probably be generalized to every single timestep for live simulation
+            currentTime = (-missile.KinematicState.vY[-1] - np.sqrt(discriminant)) / missile.KinematicState.totalAccelerationY[-1]
+
+            #Gets currentTime if it does not land
+            # currentTime = min(currentTime, dt)
+
+            missile.flightTime = currentTime + t
             break
+
     if missile.flightTime is None:  # if it never reaches the ground
         missile.flightTime = t
     return missile

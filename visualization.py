@@ -15,13 +15,16 @@ def initialConditionsText(ax, missile, environment, idx, numVehicles, x_pad=0.02
         f"Angle: {np.ceil(missile.launchAngle)}°\n"
         f"Position: ({missile.KinematicState.x[0]}, {missile.KinematicState.y[0]}) m\n"
         f"Acceleration: ({missile.KinematicState.totalAccelerationX[0]}, {missile.KinematicState.totalAccelerationY[0]}) m/s²\n"
+        f"Thrust Force: {missile.initialThrust} N\n"
+        fr"$\bf{{Atmosphere\ {idx + 1}\ Initial\ Conditions:}}$" + f"\n"
         f"Density: {environment.rho} kg/m³\n"
         f"Pressure: {environment.p} Pa\n"
         f"Temperature: {environment.T} K\n"
         f"Speed of Sound: {environment.a} m/s\n"
         f"Gravity: {environment.gravitationalAcceleration} m/s²\n"
+        fr"$\bf{{Missile\ {idx + 1}\ Current\ Conditions:}}$" + f"\n"                                                            
         f"Time of Flight: {missile.flightTime:.5f} s\n"
-        f"x-Range: {missile.x[-1]:.5f} m"
+        f"x-Range: {missile.KinematicState.x[-1]:.5f} m"
     )
 
     ax.text(x0, y0, text,
@@ -43,7 +46,7 @@ def plotTrajectory(env, missiles, trajectories):
         yVals = np.array(yVals)
 
         ax.scatter(xVals, yVals, label=f"Missile {idx + 1}")
-        ax.plot(np.unique(xVals), np.poly1d(np.polyfit(xVals, yVals, 2))(np.unique(xVals)),
+        ax.plot(np.unique(xVals), np.poly1d(np.polyfit(xVals, yVals, 3))(np.unique(xVals)),
                 label=f"Missile {idx + 1} Fit")
 
     ax.set_xlabel('X Position (m)')
