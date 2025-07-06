@@ -11,8 +11,15 @@ Simulation time-steps and state variables are stored at every time-step value
 Missile intercept contains a guidance system and predicts incoming missile trajectory
 
 **Current Features**:
-- 2D Ballistic Motion (no thrust, drag)
+- 2D Ballistic Motion, including constant thrust (no drag)
 - Visualization of trajectory and output of initial and kinematic values
+
+**Immediate To Do**:
+- Double check ending values with thrust are correct
+- See why gravity isn't changing with altitude
+- Add a window/widget to the plot visualizaiton for initial/current conditions and environment parameters
+- Add x and y pos of max height, along with t
+- Eventually, time-dependent thrust
 
 **Future Additions:**
 - 3D visualization and environment
