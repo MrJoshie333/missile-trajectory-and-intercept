@@ -26,11 +26,10 @@ env = Environment(**environment_params)
 # Angle is measured starting at the positive x-axis and going counterclockwise
 #Missile argumenets: initialMass, velocity, launchAngle, pos, acc, thrust
 missiles = [
-Vehicle(initialMass=5000,initialVelocity=32,launchAngle=15,initialPosition=[0, 15],initialAcceleration=[0, 0], thrustForce=100000),
-Vehicle(initialMass=5000,initialVelocity=100,launchAngle=10,initialPosition=[0, 0],initialAcceleration=[0, 0])
+Vehicle(initialMass=5000,initialVelocity=32,launchAngle=15,initialPosition=[0, 0],initialAcceleration=[0, 0], thrustForce=200000),
 ]
 
-time = Time(5, 100) #Time (s), numSteps
+time = Time(5, 500) #Time (s), numSteps
 
 
 results = []
