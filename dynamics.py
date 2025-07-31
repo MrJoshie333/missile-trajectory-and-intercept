@@ -16,6 +16,7 @@ class KinematicState:
     thrustAccelerationX: list[float]
     thrustAccelerationY: list[float]
     gravitationalAccelerationY: list[float]
+    thrustForce: list[float]
 
 
 # STATE USES SEMI-IMPLICIT EULER!!!!
@@ -29,6 +30,10 @@ def getState(env, missile, time):
         missile.flightAngle.append(np.arctan2(missile.KinematicState.vY[-1], missile.KinematicState.vX[-1]))
 
         # Thrust Acceleration
+        #If time passes thrust time
+        if t > missile.thrustTime:
+            missile.KinematicState.thrustForce.append(0)
+        missile.KinematicState.thrustForce.append(missile.KinematicState.thrustForce[-1])
         missile.KinematicState.thrustAccelerationX.append(missile.getThrustAccelerationX())
         missile.KinematicState.thrustAccelerationY.append(missile.getThrustAccelerationY())
 
@@ -52,6 +57,7 @@ def getState(env, missile, time):
         missile.KinematicState.y.append(missile.KinematicState.y[-1] + missile.KinematicState.vY[-1] * dt)
 
         t += dt
+
         # updated mass, later
 
         # Check if it hits the ground

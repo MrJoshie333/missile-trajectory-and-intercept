@@ -15,7 +15,7 @@ def initialConditionsText(ax, missile, environment, idx, numVehicles, x_pad=0.02
         f"Angle: {np.ceil(missile.launchAngle)}°\n"
         f"Position: ({missile.KinematicState.x[0]}, {missile.KinematicState.y[0]}) m\n"
         f"Acceleration: ({missile.KinematicState.totalAccelerationX[0]}, {missile.KinematicState.totalAccelerationY[0]}) m/s²\n"
-        f"Thrust Force: {missile.initialThrust} N\n"
+        f"Initial Thrust Force: {missile.initialThrustForce} N\n"
         fr"$\bf{{Atmosphere\ {idx + 1}\ Initial\ Conditions:}}$" + f"\n"
         f"Density: {environment.rho} kg/m³\n"
         f"Pressure: {environment.p} Pa\n"
