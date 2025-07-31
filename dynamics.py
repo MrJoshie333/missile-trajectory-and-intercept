@@ -29,13 +29,21 @@ def getState(env, missile, time):
         # Calculate new angle
         missile.flightAngle.append(np.arctan2(missile.KinematicState.vY[-1], missile.KinematicState.vX[-1]))
 
-        # Thrust Acceleration
-        #If time passes thrust time
+        #------------#
+        ####Thrust####
+        #------------#
+
+        # If time passes thrust time, then thrust goes to zero
         if t > missile.thrustTime:
             missile.KinematicState.thrustForce.append(0)
+
+        # If thrust still goes, current thrust equals immediately previous thrust
         missile.KinematicState.thrustForce.append(missile.KinematicState.thrustForce[-1])
+        #Thrust Acceleration
         missile.KinematicState.thrustAccelerationX.append(missile.getThrustAccelerationX())
         missile.KinematicState.thrustAccelerationY.append(missile.getThrustAccelerationY())
+
+        #--------------
 
         # Gravitational Acceleration
         missile.KinematicState.gravitationalAccelerationY.append(missile.getGravitationalAcceleration())
@@ -45,7 +53,9 @@ def getState(env, missile, time):
         missile.KinematicState.totalAccelerationY.append(
             missile.KinematicState.thrustAccelerationY[-1] + (
                     -1 * missile.KinematicState.gravitationalAccelerationY[-1]))
-        print(missile.KinematicState.totalAccelerationY[-1])
+        print(missile.KinematicState.totalAccelerationY[-1]) #debug; should be -9.8ish in free fall, positive in upward thrust
+
+
         # updated velocity
         missile.KinematicState.vX.append(
             missile.KinematicState.vX[-1] + missile.KinematicState.totalAccelerationX[-1] * dt)
@@ -56,6 +66,7 @@ def getState(env, missile, time):
         missile.KinematicState.x.append(missile.KinematicState.x[-1] + missile.KinematicState.vX[-1] * dt)
         missile.KinematicState.y.append(missile.KinematicState.y[-1] + missile.KinematicState.vY[-1] * dt)
 
+        #updated time
         t += dt
 
         # updated mass, later

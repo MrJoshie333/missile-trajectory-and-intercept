@@ -33,9 +33,10 @@ class Vehicle:
         initialThrustAccelerationY = initialThrustForce / initialMass * np.sin(np.deg2rad(launchAngle))
 
         # CURRENTLY ASSUMING:
-        # Constant, always on Thrust (eventually: thrustForce = ...)
+        # Constant, but time-dependent, thrust
         # Constant mass
-        # flat earth, so there is no x-component of g
+        # Flat earth, so there is no x-component of g
+        # No drag
 
         self.KinematicState = KinematicState(
             x=[initialPosition[0]], y=[initialPosition[1]],
