@@ -26,8 +26,6 @@ def getState(env, missile, time):
     while t <= time.runTime:
         # Use previous pos, v
         # do i calculate change in m,g first?
-        # Calculate new angle
-        missile.flightAngle.append(np.arctan2(missile.KinematicState.vY[-1], missile.KinematicState.vX[-1]))
 
         #------------#
         ####Thrust####
@@ -36,9 +34,9 @@ def getState(env, missile, time):
         # If time passes thrust time, then thrust goes to zero
         if t > missile.thrustTime:
             missile.KinematicState.thrustForce.append(0)
-
+        else:
         # If thrust still goes, current thrust equals immediately previous thrust
-        missile.KinematicState.thrustForce.append(missile.KinematicState.thrustForce[-1])
+            missile.KinematicState.thrustForce.append(missile.KinematicState.thrustForce[-1])
         #Thrust Acceleration
         missile.KinematicState.thrustAccelerationX.append(missile.getThrustAccelerationX())
         missile.KinematicState.thrustAccelerationY.append(missile.getThrustAccelerationY())
@@ -53,7 +51,7 @@ def getState(env, missile, time):
         missile.KinematicState.totalAccelerationY.append(
             missile.KinematicState.thrustAccelerationY[-1] + (
                     -1 * missile.KinematicState.gravitationalAccelerationY[-1]))
-        print(missile.KinematicState.totalAccelerationY[-1]) #debug; should be -9.8ish in free fall, positive in upward thrust
+        # print(missile.KinematicState.totalAccelerationY[-1]) #debug; should be -9.8ish in free fall, positive in upward thrust
 
 
         # updated velocity
@@ -62,10 +60,18 @@ def getState(env, missile, time):
         missile.KinematicState.vY.append(
             missile.KinematicState.vY[-1] + missile.KinematicState.totalAccelerationY[-1] * dt)
 
+        # Calculate new angle
+        missile.flightAngle.append(np.arctan2(missile.KinematicState.vY[-1], missile.KinematicState.vX[-1]))
+        print("velocity-based angle: " + str(np.rad2deg(missile.flightAngle[-1])))
+        # print("porition-based angle:")
+
         # updated position:
         missile.KinematicState.x.append(missile.KinematicState.x[-1] + missile.KinematicState.vX[-1] * dt)
         missile.KinematicState.y.append(missile.KinematicState.y[-1] + missile.KinematicState.vY[-1] * dt)
 
+        print(f"t={t:.2f}  vx={missile.KinematicState.vX[-1]:.2f}  vy={missile.KinematicState.vY[-1]:.2f}  θ={np.rad2deg(missile.flightAngle[-1]):.1f}°")
+        # grav = missile.getGravitationalAcceleration()
+        # # print("grav:", grav)
         #updated time
         t += dt
 

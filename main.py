@@ -26,14 +26,13 @@ env = Environment(**environment_params)
 # Angle is measured starting at the positive x-axis and going counterclockwise
 #Missile arguments: initialMass, initialVelocity, launchAngle, initialPosition, initialAcceleration, thrustForce, thrustTime
 missiles = [
-Vehicle(initialMass=5000,initialVelocity=32,launchAngle=15,initialPosition=[0, 0],initialAcceleration=[0, 0], initialThrustForce=200000, thrustTime = 6),
-Vehicle(initialMass=5000,initialVelocity=32,launchAngle=15,initialPosition=[0, 0],initialAcceleration=[0, 0], initialThrustForce=200000, thrustTime = 1),
-Vehicle(initialMass=5000,initialVelocity=32,launchAngle=15,initialPosition=[0, 0],initialAcceleration=[0, 0], initialThrustForce=200000, thrustTime = 0),
-
-
+Vehicle(initialMass=5000,initialVelocity=32,launchAngle=45,initialPosition=[0, 0],initialAcceleration=[0, 0], initialThrustForce=200000, thrustTime = 0),
+Vehicle(initialMass=5000,initialVelocity=32,launchAngle=45,initialPosition=[0, 0],initialAcceleration=[0, 0], initialThrustForce=200000, thrustTime = 1),
 ]
+# Vehicle(initialMass=5000,initialVelocity=32,launchAngle=15,initialPosition=[0, 0],initialAcceleration=[0, 0], initialThrustForce=200000, thrustTime = 1),
+# Vehicle(initialMass=5000,initialVelocity=32,launchAngle=15,initialPosition=[0, 0],initialAcceleration=[0, 0], initialThrustForce=200000, thrustTime = 0)
 
-time = Time(5, 500) #Time (s), numSteps
+time = Time(7, 500) #Time (s), numSteps
 
 
 results = []
@@ -42,7 +41,7 @@ for missile in missiles:
     state = getState(env, missile, time)
     allTrajectories.append([(x,y) for x,y in zip(missile.KinematicState.x, missile.KinematicState.y)])
 
-plotTrajectory(env, missiles, allTrajectories)
+plotTrajectory(env, missiles, allTrajectories, fixed_axes=True)
 
 # # /----- Debugging -----/
 #
